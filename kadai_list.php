@@ -1,0 +1,50 @@
+<?php
+// DB接続
+$dbn = 'mysql:dbname=gs_kadai07_db1;charset=utf8mb4;port=3306;host=localhost';
+$user = 'root';
+$pwd = '';
+
+try { 
+  $pdo = new PDO($dbn, $user, $pwd); // PHP Data Object
+}catch(PDOException $e) {
+  // 連想配列（PHP）→JSON文字列
+  echo json_encode(["db error" => "{$e->getMessage()}"]);
+  exit();
+}
+
+// 課題一覧取得
+$sql = 'SELECT id, title FROM kadai ORDER by id ASC';
+$stmt = $pdo->prepare($sql);
+try {
+  $stmt->execute();
+}catch(PDOException $e) {
+    // 連想配列（PHP）→JSON文字列
+ echo json_encode(["sql error" => "{$e->getMessage()}"]);
+}
+
+$kadai_list = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーにした連想配列で取得
+
+?>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>課題一覧</title>
+</head>
+<body>
+  <h1>課題一覧</h1>
+  <ul>
+    <?php foreach($kadai_list as $kadai): ?>
+      <li>
+        <!-- 個別掲示板へのリンク -->
+        <!-- htmlspecialchras:XSS対策 -->
+        <a href="kadai.php?kadai_id=<?= htmlspecialchars($kadai['id']) ?>">
+          <?= htmlspecialchars($kadai['title']) ?>
+        </a>
+      </li>  
+      <?php endforeach; ?>
+  </ul>
+</body>
+</html>

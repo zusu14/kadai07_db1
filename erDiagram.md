@@ -19,7 +19,7 @@ erDiagram
     COMMENT {
       string nickname
       string comment
-      date date
+      date commented_at
     }
 
 ```
