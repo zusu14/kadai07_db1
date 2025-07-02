@@ -18,8 +18,9 @@ $stmt = $pdo->prepare($sql);
 try {
   $stmt->execute();
 }catch(PDOException $e) {
-    // 連想配列（PHP）→JSON文字列
- echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  // 連想配列（PHP）→JSON文字列
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
 }
 
 $kadai_list = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーにした連想配列で取得
