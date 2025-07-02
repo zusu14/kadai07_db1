@@ -2,24 +2,14 @@
 // var_dump($_GET);
 // exit();
 
-// DB接続
-$dbn = 'mysql:dbname=gs_kadai07_db1;charset=utf8mb4;port=3306;host=localhost';
-$user = 'root';
-$pwd = '';
-
-try { 
-  $pdo = new PDO($dbn, $user, $pwd); // PHP Data Object
-}catch(PDOException $e) {
-  // 連想配列（PHP）→JSON文字列
-  echo json_encode(["db error" => "{$e->getMessage()}"]);
-  exit();
-}
-
 // GETパラメータのチェック
 if(!isset($_GET['kadai_id']) || !is_numeric($_GET['kadai_id'])){
   exit('ParamError');
 }
 $kadai_id = (int)$_GET['kadai_id']; // int型にキャスト
+
+// DB接続
+require_once('db_connect.php');
 
 // 課題情報取得
 $sql = 'SELECT * FROM kadai WHERE id = :kadai_id'; // プレースホルダ
