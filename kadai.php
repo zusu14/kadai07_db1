@@ -58,15 +58,13 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーとした
   <?php if(count($comments) === 0): ?>
     <p>まだコメントはありません</p>
   <?php else: ?>
-    <ul>
     <?php foreach($comments as $comment): ?>
-      <li>
+      <div class='post'>
         <strong><?= htmlspecialchars($comment['nickname']) ?></strong>
         (<?= htmlspecialchars($comment['commented_at'])?>)<br>
         <?= nl2br(htmlspecialchars($comment['comment'])) ?>
-      </li>
+      </div>
     <?php endforeach; ?>
-    </ul>
   <?php endif; ?>
 </body>
 </html>
