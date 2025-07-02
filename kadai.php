@@ -56,9 +56,28 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーとした
   <title>「<?= htmlspecialchars($kadai['title']) ?>」の掲示板</title>
 </head>
 <body>
+  <!-- 課題情報 -->
   <h1>「<?= htmlspecialchars($kadai['title']) ?>」の掲示板</h1>
   <p><a href="kadai_list.php">課題一覧に戻る</a></p>
-  
+  <p><strong>課題タイトル：</strong><?= htmlspecialchars($kadai['title']) ?></p>
+  <p>
+    <strong>Repository URL：</strong>
+    <a href="<?= htmlspecialchars($kadai['repositoryUrl']) ?>" target='_blank' rel="noopener norefeerer">
+      <?= htmlspecialchars($kadai['repositoryUrl']) ?>
+    </a>
+  </p>
+  <p>
+    <strong>Deploy URL：</strong>
+    <a href="<?= htmlspecialchars($kadai['deployUrl']) ?>" target='_blank' rel="noopener norefeerer">
+      <?= htmlspecialchars($kadai['deployUrl']) ?>
+    </a>
+  </p>
+  <!-- メモ -->
+  <!-- target="_blank" : リンクを新しいタブで開く指定。 -->
+  <!-- rel="noopener noreferrer" : 新しいタブに開かれたページが元のページの情報にアクセスできない＆新しいページにどこからきたかを伝えない -->
+  <!-- target="_blank" だけだと、リンク先ページがJSで元ページを操作でき、フィッシング詐欺や書き換え攻撃のリスク -->
+
+
   <!-- コメント投稿フォーム -->
   <h2>コメント投稿</h2>
   <form action="comment_create.php" method="POST">
