@@ -27,7 +27,7 @@ $stmt = $pdo->prepare($sql);
 // SQLインジェクション対策　方法① 連想配列で渡す
 $stmt->execute([':kadai_id' => $kadai_id]);
 
-// SQLインジェクション対策　方法②
+// SQLインジェクション対策　方法② vindValue()
 // $stmt->bindValue(':kadai_id', $kadai_id, PDO::PARAM_INT);
 // $stmt->execute();
 
@@ -54,12 +54,29 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーとした
 </head>
 <body>
   <h1>「<?= htmlspecialchars($kadai['title']) ?>」の掲示板</h1>
+  <p><a href="kadai_list.php">課題一覧に戻る</a></p>
+  
+  <!-- コメント投稿フォーム -->
+  <h2>コメント投稿</h2>
+  <form action="comment_create.php" method="POST">
+    <div>
+      <label for="nickname">ニックネーム：</label>
+      <input type="text" id="nickname" name="nickname" required>
+    </div>
+    <div>
+      <label for="comment">コメント：</label>
+      <textarea id="comment" name="comment" rows="4" cols="40" required></textarea>
+    </div>
+  </form>
+
+  <!-- コメント一覧表示 -->
   <h2>コメント一覧</h2>
   <?php if(count($comments) === 0): ?>
     <p>まだコメントはありません</p>
   <?php else: ?>
     <?php foreach($comments as $comment): ?>
       <div class='post'>
+        <!-- htmlspecialchars():XSS対策 -->
         <strong><?= htmlspecialchars($comment['nickname']) ?></strong>
         (<?= htmlspecialchars($comment['commented_at'])?>)<br>
         <?= nl2br(htmlspecialchars($comment['comment'])) ?>

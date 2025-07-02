@@ -39,7 +39,7 @@ $kadai_list = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーにし�
     <?php foreach($kadai_list as $kadai): ?>
       <li>
         <!-- 個別掲示板へのリンク -->
-        <!-- htmlspecialchras:XSS対策 -->
+        <!-- htmlspecialchras():XSS対策 -->
         <a href="kadai.php?kadai_id=<?= htmlspecialchars($kadai['id']) ?>">
           <?= htmlspecialchars($kadai['title']) ?>
         </a>
