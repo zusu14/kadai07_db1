@@ -15,18 +15,23 @@ try {
   exit();
 }
 
-// GETパラメータの検証
+// GETパラメータのチェック
 if(!isset($_GET['kadai_id']) || !is_numeric($_GET['kadai_id'])){
   exit('ParamError');
 }
-$kadai_id = (int)$_GET['kadai_id'];
+$kadai_id = (int)$_GET['kadai_id']; // int型にキャスト
 
 // 課題情報取得
 $sql = 'SELECT * FROM kadai WHERE id = :kadai_id'; // プレースホルダ
 $stmt = $pdo->prepare($sql);
-// SQLインジェクション対策　方法① 連想配列で渡す
-$stmt->execute([':kadai_id' => $kadai_id]);
-
+try {
+  // SQLインジェクション対策　方法① 連想配列で渡す
+  $stmt->execute([':kadai_id' => $kadai_id]);
+}catch(PDOException $e) {
+  // 連想配列（PHP）→JSON文字列
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
 // SQLインジェクション対策　方法② vindValue()
 // $stmt->bindValue(':kadai_id', $kadai_id, PDO::PARAM_INT);
 // $stmt->execute();
@@ -40,8 +45,16 @@ if(!$kadai) {
 // コメント一覧取得（投稿日降順）
 $sql = 'SELECT nickname, comment, commented_at FROM comment WHERE kadai_id=:kadai_id ORDER BY commented_at DESC';
 $stmt = $pdo->prepare($sql);
+
+// SQLインジェクション対策　方法② vindValue()
 $stmt->bindValue(':kadai_id', $kadai_id, PDO::PARAM_INT);
-$stmt->execute();
+try {
+  $stmt->execute();
+}catch(PDOException $e) {
+  // 連想配列（PHP）→JSON文字列
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
 $comments = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーとした連想配列
 ?>
 
@@ -67,6 +80,9 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーとした
       <label for="comment">コメント：</label>
       <textarea id="comment" name="comment" rows="4" cols="40" required></textarea>
     </div>
+    <!-- kadai_idを非表示で送信 -->
+    <input type="hidden" name="kadai_id" value="<?= htmlspecialchars($kadai_id) ?>">
+    <button>投稿する</button>
   </form>
 
   <!-- コメント一覧表示 -->
