@@ -56,9 +56,9 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーとした
   <title>「<?= htmlspecialchars($kadai['title']) ?>」の掲示板</title>
 </head>
 <body>
-  <h1>「<?= htmlspecialchars($kadai['title']) ?>」の掲示板</h1>
   <p><a href="kadai_list.php">課題一覧に戻る</a></p>
-  
+  <h1>「<?= htmlspecialchars($kadai['title']) ?>」の掲示板</h1>
+
   <!-- 課題情報 -->
   <div id="info_kadai">
     <p><strong>課題タイトル：</strong><?= htmlspecialchars($kadai['title']) ?></p>
