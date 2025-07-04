@@ -54,6 +54,7 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーとした
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>「<?= htmlspecialchars($kadai['title']) ?>」の掲示板</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <p><a href="kadai_list.php">課題一覧に戻る</a></p>
