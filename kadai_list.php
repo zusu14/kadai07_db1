@@ -23,6 +23,7 @@ $kadai_list = $stmt->fetchAll(PDO::FETCH_ASSOC); // カラム名をキーにし�
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>課題一覧</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>課題一覧</h1>
